@@ -89,18 +89,21 @@ def setRoomContents():
 	
 
 def setOtherRoomContents():
-	global doorBContent, doorCContent
+	global doorBContent, doorCContent, doorStates
 	if doorAContent == car:
 		doorBContent = goat
 		doorCContent = goat
+		doorStates = 1
 	elif doorAContent == goat:
 		rand = randint(1, 2)
 		if rand == 1:
 			doorBContent = car
 			doorCContent = goat
+			doorStates = 2
 		else:
 			doorBContent = goat
 			doorCContent = car
+			doorStates = 3
 
 def printRoomContent():
 	print doorAContent, doorBContent, doorCContent
@@ -110,8 +113,91 @@ def printAllDoors():
 
 def revealOtherDoor():
 	print ("Thanks for selecting door %d!") % (doorA)
+	print ("I will now show you whats behind one of the other two doors. Are you ready?")
+	doorPicker()
 
+def doorPicker():
+	#your chosen door, randomly pick one of hte other two doors.
+	if doorStates == 2:
+		revelationExplanation(3)
+	else:
+		revelationExplanation(2)
 
+def revelationExplanation(doorToOpen):
+	print("Well, behind door number %d is a beautiful Goat!") % doorToOpen
+	goatImage()
+	if doorToOpen == 2:
+		print("Now that you know door %s contains a goat, would you like to switch your door to door number 3?") % doorB
+	elif doorToOpen == 3:
+		print("Now that you know door %s contains a goat, would you like to switch your door to door number 2?") % doorC
+	else:
+		#TODO: randomise the doors
+		print("Now that you know door 2 contains a goat, would you like to switch your door to door number 3?")
+
+def switchDoor():
+	print("Would you like to switch doors?")
+	yes = {'yes','y', 'ye', ''}
+	no = {'no','n'}
+
+	choice = raw_input().lower()
+	if choice in yes:
+   		letsSwitch()
+	elif choice in no:
+   		noSwitch()
+	else:
+   		print("Please respond with 'yes' or 'no'")
+
+def letsSwitch():
+	#now we want to switch doors and reveal whats behind your door
+	if doorA == 1:
+		printWinningDoor(True)
+	elif doorA == 2:
+		printWinningDoor(True)
+	else:
+		printWinningDoor(False)
+	
+def printWinningDoor(win):
+	print """
+
+Lets take a look behind your door...
+
+oh wow...behind your door is a....
+
+	"""
+	if win == True:
+		carImage()
+	else:
+		goatImage()
+
+def carImage():
+	print"""
+	                  _____       _____
+     .........   {     }     {     }
+    (>>\zzzzzz [======================]
+    ( <<<\lllll_\\ _        _____    \\
+   _,`-,\<   __#:\\::_    __#:::_:__  \\
+  /    . `--,#::::\\:::___#::::/__+_\ _\\
+ /  _  .`-    `--,/_~~~~~~~~~~~~~~~~~~~~  -,_
+:,// \ .         .  '--,____________   ______`-,
+ :: o |.         .  ___ \_____||____\+/     ||~ \
+ :;   ;-,_       . ,' _`,""""""""""""""""""""""""\
+ \ \_/ _ :`-,_   . ; / \\ ====================== /
+  \__/~ /     `-,.; ; o |\___[~~~]_ASCII__[~~~]__:
+     ~~~          ; :   ;~ ;  ~~~         ;~~~::;
+                   \ \_/ ~/               ::::::;
+                    \_/~~/                 \:::/
+	"""
+def goatImage():
+	print"""
+                                      ,,~~--___---,
+                                     /            .~,
+                               /  _,~             )
+                              (_-(~)   ~, ),,,(  /'
+                               Z6  .~`' ||     \ |
+                               /_,/     ||      ||
+                         ~~~~~~~~~~~~~~~W`~~~~~~W`~~~~~~~~~
+	"""
+	#reveal whats behind your door
 
 #Starting Method
 
@@ -122,6 +208,6 @@ def startGame():
 	explainRules()
 	doorSelection()
 	revealOtherDoor()
-
+	switchDoor()
 
 startGame()
