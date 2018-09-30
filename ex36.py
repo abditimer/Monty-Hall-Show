@@ -48,7 +48,7 @@ def doorSelectionHandler():
 	while True:
 		try:
 			doorA = int(input(">"))
-			print doorA
+			#print doorA
 			if doorA <= 3 and doorA >=1:
 				break
 			else:
@@ -118,44 +118,64 @@ def revealOtherDoor():
 
 def doorPicker():
 	#your chosen door, randomly pick one of hte other two doors.
+	print("The other two doors that are unopened are door %d and door %d.") % (doorB, doorC)
+	#if door 1 is picked, other two doors are 2,3
+	#if door 2 is picked, other two doors are 1,3
+	#if door 3 is picked, other two doors are 1,2
 	if doorStates == 2:
-		revelationExplanation(3)
+		revelationExplanation(doorC)
 	else:
-		revelationExplanation(2)
+		revelationExplanation(doorB)
 
 def revelationExplanation(doorToOpen):
+	print
 	print("Well, behind door number %d is a beautiful Goat!") % doorToOpen
 	goatImage()
-	if doorToOpen == 2:
-		print("Now that you know door %s contains a goat, would you like to switch your door to door number 3?") % doorB
-	elif doorToOpen == 3:
-		print("Now that you know door %s contains a goat, would you like to switch your door to door number 2?") % doorC
+	if doorToOpen == doorC:
+		print("Now that you know door %s contains a goat, would you like to switch your door to door number %s?") % (doorC, doorB)
 	else:
 		#TODO: randomise the doors
-		print("Now that you know door 2 contains a goat, would you like to switch your door to door number 3?")
+		print("Now that you know door %s contains a goat, would you like to switch your door to door number %s?") % (doorB, doorC)
 
 def switchDoor():
+	print
 	print("Would you like to switch doors?")
-	yes = {'yes','y', 'ye', ''}
-	no = {'no','n'}
+	while True: 
+		try:
+			yes = {'yes','y', 'ye', ''}
+			no = {'no','n'}
 
-	choice = raw_input().lower()
-	if choice in yes:
-   		letsSwitch()
-	elif choice in no:
-   		noSwitch()
-	else:
-   		print("Please respond with 'yes' or 'no'")
+			choice = raw_input().lower()
+			if choice in yes:
+   				letsSwitch()
+   				break
+			elif choice in no:
+   				noSwitch()
+   				break
+			else:
+   				print("Please respond with 'yes' or 'no'")
+   		except:
+   			print("Please respond with 'yes' or 'no'")
 
 def letsSwitch():
+	print
+	print("So you decided to switch...")
+	print
 	#now we want to switch doors and reveal whats behind your door
-	if doorA == 1:
+	if doorStates == 1:
 		printWinningDoor(True)
-	elif doorA == 2:
+	elif doorStates == 2:
 		printWinningDoor(True)
 	else:
 		printWinningDoor(False)
 	
+
+def noswitch():
+	if doorStates == 3:
+		printWinningDoor(True)
+	else:
+		printWinningDoor(False)
+
 def printWinningDoor(win):
 	print """
 
